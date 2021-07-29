@@ -10,10 +10,8 @@ import {
 } from '@vue/composition-api';
 import { useLocalStorage } from '@vueuse/core';
 
-const http = axios.create({
-  baseURL: process.env.VUE_APP_API_URL,
-  withCredentials: true,
-});
+const http = axios.create({ baseURL: '/api' });
+http.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token') ?? 'Unauthorized'}`;
 
 const user = Vue.observable({
   value: null,

@@ -44,28 +44,30 @@
 <script>
 import { useForm, useHttp, useRouter, useUser } from '@/use/core';
 import { ref } from '@vue/composition-api';
+import { useLocalStorage } from '@vueuse/core';
 
 export default {
   name: 'Login.vue',
 
   setup() {
+    const tokenStorage = useLocalStorage('token', 'Unauthorized');
     const loading = ref(false);
     const { form, errors, setErrors } = useForm({
       username: '',
       password: '',
     });
 
-    const http = useHttp();
+    const http = useHttp().unwrapped;
     const router = useRouter();
+    const user = useUser();
 
     async function submit() {
       loading.value = true;
       try {
-        const { token, maxAge, userId } = await http.post('/auth/login', form);
-        const user = useUser();
-        user.value = await http.get(`/users/${userId}`);
-
-        document.cookie = `${process.env.VUE_APP_AUTH_COOKIE}=${token} ; max-age=${maxAge}; path=/`;
+        const { token, userId } = (await http.post('/auth/login', form)).data;
+        user.value = (await http.get(`/users/${userId}`)).data;
+        http.defaults.headers.Authorization = `Bearer ${token}`;
+        tokenStorage.value = token;
         router.push({ name: 'ListProduct' });
       } catch {
         setErrors({

@@ -147,7 +147,7 @@ export default {
 
     const user = useUser();
     const isLoggedIn = computed(() => !!user.value);
-    const isAdmin = computed(() => isLoggedIn.value && user.value.roles.some((role) => role.name === 'Admin'));
+    const isAdmin = computed(() => isLoggedIn.value && user.value.roles?.some((role) => role.name === 'Admin'));
 
     const router = useRouter();
     const keyword = ref(root.$route.query.search ?? '');

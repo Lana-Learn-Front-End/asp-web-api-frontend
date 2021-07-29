@@ -23,16 +23,19 @@
 </template>
 
 <script>
-import { useRouter, useUser } from '@/use/core';
+import { useHttp, useRouter, useUser } from '@/use/core';
+import { useLocalStorage } from '@vueuse/core';
 
 export default {
   name: 'Logout',
   setup() {
     const router = useRouter();
+    const http = useHttp();
+    const tokenStorage = useLocalStorage('token', 'Unauthorized');
 
     function logout() {
-      const pass = new Date(new Date().getTime() - 10000);
-      document.cookie = `${process.env.VUE_APP_AUTH_COOKIE}= ; expires= ${pass.toUTCString()}; path=/`;
+      tokenStorage.value = 'Unauthorized';
+      http.unwrapped.defaults.headers.Authorization = 'Bearer Unauthorized';
       const user = useUser();
       user.value = null;
       router.push({ name: 'ListProduct' });
