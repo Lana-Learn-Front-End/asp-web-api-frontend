@@ -48,7 +48,7 @@ import { useQuery } from '@/use/core';
 export default {
   name: 'ListNews.vue',
   setup() {
-    const { data, query, meta } = useQuery('/news/page', { size: 5 });
+    const { data, query, meta } = useQuery('/news', { size: 5 });
 
     watch(() => query.page, () => {
       useTitle(`Prodgon news - page ${query.page}`);

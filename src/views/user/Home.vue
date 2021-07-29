@@ -118,8 +118,8 @@ export default {
   setup() {
     useTitle('Prodgon');
 
-    const { data: product } = useQuery('/products/page', { size: 10 }, false);
-    const { data: news } = useQuery('/news/page', { size: 3 }, false);
+    const { data: product } = useQuery('/products', { size: 10 }, false);
+    const { data: news } = useQuery('/news', { size: 3 }, false);
 
     return {
       product,

@@ -58,7 +58,7 @@ export function useHttp() {
     unwrapped: http,
     resolve(...paths) {
       if (!paths?.length) {
-        return;
+        return '';
       }
       return `${http.defaults.baseURL}/${paths.join('/')}`;
     },
